@@ -1,0 +1,45 @@
+# Plantilla para crear un nuevo perfil de dominio.
+# Copia esta carpeta, renómbrala y ajusta los campos. No se toca core/.
+name: template_supervisor
+display_name: Plantilla (supervisor-worker)
+description: >
+  Esqueleto del patrón supervisor-worker: un orquestador descompone la tarea,
+  delega en agentes especializados y sintetiza el resultado final.
+
+orchestration_pattern: supervisor_worker
+
+orchestrator:
+  id: orquestador
+  description: >-
+    Planifica la tarea, la reparte entre los agentes especializados y
+    sintetiza sus salidas en una respuesta final coherente.
+  model: claude-sonnet-5
+  system_prompt_file: agents/orquestador.md
+  tools: []
+  max_iterations: 8
+
+agents:
+  - id: analista
+    description: >-
+      Analiza datos, identifica patrones y produce hallazgos cuantitativos
+      a partir de la información disponible.
+    model: claude-haiku-4-5-20251001
+    system_prompt_file: agents/analista.md
+    tools: [document_lookup]
+    max_iterations: 4
+
+  - id: redactor
+    description: >-
+      Redacta y edita contenido final a partir de los hallazgos del analista,
+      ajustando tono y formato al destinatario.
+    model: claude-sonnet-5
+    system_prompt_file: agents/redactor.md
+    tools: [kb_search]
+    max_iterations: 4
+
+limits:
+  max_iterations: 10
+  max_cost_usd: 1.00
+  max_tool_calls: 20
+
+human_in_the_loop: false

@@ -1,0 +1,10 @@
+# Prospecto en prueba gratuita: solo soporte, con tope de gasto muy bajo.
+tenant_id: prospecto-trial
+display_name: Prospecto en trial
+profile: demo_asistentes
+plan: trial
+enabled_agents: [soporte]   # el plan trial no incluye agenda ni investigación
+monthly_budget_usd: 2.0
+max_cost_per_run_usd: 0.02
+active: true
+notes: Demuestra el gating por plan. Al pedir agenda, el router escala.

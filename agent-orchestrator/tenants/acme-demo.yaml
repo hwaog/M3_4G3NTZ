@@ -1,0 +1,10 @@
+# Cliente de demostración: plan Pro con todos los asistentes activos.
+tenant_id: acme-demo
+display_name: Acme S.A.S. (demo)
+profile: demo_asistentes
+plan: pro
+enabled_agents: []          # vacío = todos los agentes del perfil
+monthly_budget_usd: 50.0
+max_cost_per_run_usd: 0.25
+active: true
+notes: Tenant usado para demos en vivo y capturas del caso de estudio.
