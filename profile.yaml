@@ -1,0 +1,51 @@
+name: demo_asistentes
+display_name: Paquete de asistentes virtuales
+description: >
+  Suite de asistentes que atienden solicitudes entrantes de clientes finales.
+  Un router clasifica cada mensaje y lo asigna al asistente correspondiente,
+  con escalamiento explícito a humano cuando la confianza es baja.
+
+orchestration_pattern: router
+
+router:
+  model: claude-haiku-4-5-20251001
+  confidence_threshold: 0.6
+  default_agent: null
+  escalation_message: >-
+    Prefiero que una persona del equipo revise tu caso para darte una
+    respuesta precisa. Ya lo derivé y te contactarán en breve.
+
+agents:
+  - id: soporte
+    description: >-
+      Resuelve preguntas frecuentes sobre horarios, precios, planes,
+      facturación, políticas de devolución y condiciones del servicio.
+    model: claude-haiku-4-5-20251001
+    system_prompt_file: agents/soporte.md
+    tools: [kb_search, current_time]
+    max_iterations: 4
+
+  - id: agenda
+    description: >-
+      Gestiona citas, reuniones y llamadas: consulta disponibilidad, agenda,
+      reprograma y confirma espacios en el calendario.
+    model: claude-haiku-4-5-20251001
+    system_prompt_file: agents/agenda.md
+    tools: [calendar_check, current_time]
+    max_iterations: 4
+
+  - id: investigacion
+    description: >-
+      Busca y resume documentos internos, manuales, informes y procedimientos
+      para responder consultas que requieren investigación.
+    model: claude-sonnet-5
+    system_prompt_file: agents/investigacion.md
+    tools: [document_lookup, kb_search]
+    max_iterations: 6
+
+limits:
+  max_iterations: 8
+  max_cost_usd: 0.50
+  max_tool_calls: 15
+
+human_in_the_loop: true
